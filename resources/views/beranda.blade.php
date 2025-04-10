@@ -11,7 +11,7 @@
 
 @section('content')
 <!-- content -->
-<div class="grid grid-cols-2 gap-5 grid-rows">
+<div class="grid grid-cols-2 overflow-y-auto gap-5 grid-rows">
 
     <div class="col-span-2 p-5 bg-white rounded-md">
         <img class="mx-auto" src="{{ asset('storage/logo.png') }}" alt="">
@@ -22,7 +22,7 @@
         <center class="font-semibold">Surat Keluar</center>
         <div class="grid grid-cols-2 gap-5 grid-rows">
             <div class="flex p-5 rounded-md shadow-md">
-                <div class="p-2 bg-yellow-500 rounded-xl">
+                <div class="p-2 bg-yellow-500 my-auto rounded-xl">
                     <svg class="text-white" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                         viewBox="0 0 24 24">
                         <!-- Icon from Unicons by Iconscout - https://github.com/Iconscout/unicons/blob/master/LICENSE -->
@@ -32,11 +32,11 @@
                 </div>
                 <center class="mx-auto">
                     <p>Belum Dikirim</p>
-                    <strong>0</strong>
+                    <strong>{{ $data['belum_dikirim'] }}</strong>
                 </center>
             </div>
             <div class="flex p-5 rounded-md shadow-md">
-                <div class="p-2 bg-red-500 rounded-xl">
+                <div class="p-2 bg-red-500 my-auto rounded-xl">
                     <svg class="text-white" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                         viewBox="0 0 24 24">
                         <!-- Icon from Unicons by Iconscout - https://github.com/Iconscout/unicons/blob/master/LICENSE -->
@@ -46,7 +46,7 @@
                 </div>
                 <center class="mx-auto">
                     <p>Ditolak</p>
-                    <strong>0</strong>
+                    <strong>{{ $data['ditolak'] }}</strong>
                 </center>
             </div>
         </div>
@@ -56,7 +56,7 @@
         <center class="font-semibold">Surat Masuk</center>
         <div class="grid grid-cols-2 gap-5 grid-rows">
             <div class="flex p-5 rounded-md shadow-md">
-                <div class="p-2 bg-yellow-500 rounded-xl">
+                <div class="p-2 bg-yellow-500 my-auto rounded-xl">
                     <svg class="text-white" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                         viewBox="0 0 24 24">
                         <!-- Icon from Unicons by Iconscout - https://github.com/Iconscout/unicons/blob/master/LICENSE -->
@@ -66,11 +66,11 @@
                 </div>
                 <center class="mx-auto">
                     <p>Belum Dibaca</p>
-                    <strong>0</strong>
+                    <strong>{{ $data['belum_dibaca']}} </strong>
                 </center>
             </div>
             <div class="flex p-5 rounded-md shadow-md">
-                <div class="p-2 bg-gray-500 rounded-xl">
+                <div class="p-2 bg-gray-500 my-auto rounded-xl">
                     <svg class="text-white" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                         viewBox="0 0 24 24">
                         <!-- Icon from Unicons by Iconscout - https://github.com/Iconscout/unicons/blob/master/LICENSE -->
@@ -80,25 +80,28 @@
                 </div>
                 <center class="mx-auto">
                     <p>Tindak Lanjut</p>
-                    <strong>0</strong>
+                    <strong>{{ $data['tindaklanjut'] }}</strong>
                 </center>
             </div>
         </div>
     </div>
     <div class="col-span-2 p-5 space-y-4 bg-white rounded">
-        <h2 class="font-semibold text-center">Tandatangan Surat</h2>
+        <h2 class="font-semibold text-center">Daftar Surat Disposisi</h2>
         <div class="relative overflow-x-auto">
             <table class="w-full text-sm text-left text-gray-500 rtl:text-right">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Nomor Surat
+                            Tanggal Dibuat
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Pengirim
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Tanggal
+                            Nomor Surat
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Keterangan
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Aksi
@@ -106,48 +109,36 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if (count($surat) == 0)
                     <tr class="bg-white border-b border-gray-200">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            001/SM/2021
-                        </th>
-                        <td class="px-6 py-4">
-                            Sekretaris
-                        </td>
-                        <td class="px-6 py-4">
-                            2021-01-01
-                        </td>
-                        <td class="px-6 py-4">
-                            <button class="px-3 py-1 text-white bg-blue-500 rounded-md">Tandatangani</button>
+                        <td colspan="5" class="px-6 py-4 text-center">
+                            Tidak ada surat masuk yang perlu didisposisi.
                         </td>
                     </tr>
-                    <tr class="bg-white">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            002/SM/2021
-                        </th>
+                    @else
+                    @foreach($surat as $item)
+                    <tr class="bg-white border-b border-gray-200 @if( $item->status == 'baru' ) font-semibold @endif">
                         <td class="px-6 py-4">
-                            Kepala Dinas
+                            {{ $item->created_at->format('D, d M Y') }}
                         </td>
                         <td class="px-6 py-4">
-                            2021-01-02
+                            {{ $item->pengirim->name }}
                         </td>
                         <td class="px-6 py-4">
-                            <button class="px-3 py-1 text-white bg-blue-500 rounded-md">Tandatangani</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            003/SM/2021
-                        </th>
-                        <td class="px-6 py-4">
-                            Kepala Dinas
+                            {{ $item->nomor_surat }}
                         </td>
                         <td class="px-6 py-4">
-                            2021-01-03
+                            {{ $item->keterangan }}
                         </td>
                         <td class="px-6 py-4">
-                            <button class="px-3 py-1 text-white bg-blue-500 rounded-md">Tandatangani</button>
+                            <a href="/suratmasuk/selesai/{{ $item->id }}"
+                                class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm hover:cursor-pointer hover:bg-blue-200">
+                                Selesai
+                            </a>
                         </td>
                     </tr>
+                    @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Surat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Suratcontroller extends Controller
 {
@@ -11,7 +13,17 @@ class Suratcontroller extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $data = [
+            'belum_dikirim' => Surat::where('pengirim_id', Auth::id())->where('verifikasi', 'belum')->count(),
+            'ditolak' => Surat::where('pengirim_id', Auth::id())->where('verifikasi', 'ditolak')->count(),
+            'belum_dibaca' => Surat::where('tujuan_id', Auth::id())->where('status', 'baru')->count(),
+            'tindaklanjut' => Surat::where('tujuan_id', Auth::id())->where('status', 'proses')->count(),
+        ];
+
+        $surat = Surat::where('tujuan_id', Auth::id())
+            ->where('status', 'diproses')
+            ->get();
+        return view('beranda', compact('surat', 'data'));
     }
 
     /**
