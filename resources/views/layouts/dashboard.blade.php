@@ -58,11 +58,10 @@
                                     d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71L8.46 9.17a1 1 0 0 0-1.41 0a1 1 0 0 0 0 1.42l4.24 4.24a1 1 0 0 0 1.42 0L17 10.59a1 1 0 0 0 0-1.42" />
                             </svg>
                         </button>
-                        <div class="mt-2 panel">
+                        <div class="mt-2 panel hidden">
                             <ul class="ml-4 space-y-2 list-disc list-inside">
                                 <li><a class="hover:text-gray-800" href="/suratmasuk/daftar">Daftar Surat Masuk</a></li>
                                 <li><a class="hover:text-gray-800" href="/suratmasuk/disposisi">Disposisi</a></li>
-                                <li><a class="hover:text-gray-800" href="/suratmasuk/log">Log Surat Masuk</a></li>
                             </ul>
                         </div>
                     </li>
@@ -87,7 +86,7 @@
                                     d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71L8.46 9.17a1 1 0 0 0-1.41 0a1 1 0 0 0 0 1.42l4.24 4.24a1 1 0 0 0 1.42 0L17 10.59a1 1 0 0 0 0-1.42" />
                             </svg>
                         </button>
-                        <div class="mt-2 panel">
+                        <div class="mt-2 panel hidden">
                             <ul class="ml-4 space-y-2 list-disc list-inside">
                                 <li>
                                     <a class="hover:text-gray-800" href="/suratkeluar/registrasi">
@@ -99,19 +98,19 @@
                                         Daftar Surat Keluar
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="hover:text-gray-800" href="/suratkeluar/log">
-                                        Log Surat Keluar
-                                    </a>
-                                </li>
+                                @if (Auth::user()->role == 'admin')
+
                                 <li>
                                     <a class="hover:text-gray-800" href="/suratkeluar/verifikasi">
                                         Verifikasi Surat Keluar
                                     </a>
                                 </li>
+                                @endif
                             </ul>
                         </div>
                     </li>
+                    @if (Auth::user()->role == 'admin')
+
                     <li class="py-2 text-xs font-bold">
                         MASTER
                     </li>
@@ -142,6 +141,8 @@
                                 <li><a class="hover:text-gray-800" href="/profil">Profil Saya</a></li>
                             </ul>
                         </div>
+                        @endif
+
                     </li>
                 </ul>
             </aside>

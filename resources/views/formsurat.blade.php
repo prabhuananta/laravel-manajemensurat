@@ -51,15 +51,48 @@
         </div>
 
         <div>
-            <label class="block mb-2 text-sm font-medium" for="file_input">Isi Surat</label>
-            <input type="file" name="isi" aria-describedby="file_input_help" id="file_input" value="{{ old('isi') }}"
-                accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                class="block w-full border rounded-lg border-gray-300 bg-gray-50 text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-s-md file:text-sm file:font-semibold file:bg-gray-800 file:text-white hover:file:bg-gray-700" />
-            <p class="mt-1 text-sm text-gray-500 " id="file_input_help">
-                File Surat .DOCX .PDF (Max 10MB).
-            </p>
-        </div>
+            <span class="block mb-2 text-sm font-medium text-center">Isi Surat</span>
+            <label class="block mb-2 text-sm font-medium" for="tanggal">Tanggal Surat</label>
+            <input type="text" name="tanggal" id="tanggal"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Tanggal" value="{{ old('tanggal') }}" required>
 
+            <label class="block mb-2 text-sm font-medium" for="nomor_surat">Nomor Surat</label>
+            <input type="text" name="nomor_surat" id="nomor_surat"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Nomor Surat" value="{{ old('nomor_surat') }}" required>
+
+            <label class="block mb-2 text-sm font-medium" for="lampiran_surat">Lampiran Surat</label>
+            <input type="text" name="lampiran_surat" id="lampiran_surat"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="(Halaman)" value="{{ old('lampiran_surat') }}" required>
+
+            <label class="block mb-2 text-sm font-medium" for="perihal_surat">Perihal Surat</label>
+            <input type="text" name="perihal_surat" id="perihal_surat"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Perihal Surat" value="{{ old('perihal_surat') }}" required>
+
+            <label class="block mb-2 text-sm font-medium" for="isi">Isi Surat</label>
+            <textarea type="text" name="isi" id="isi"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Isi Surat" required>{{ old('isi') }}</textarea>
+
+            <label class="block mb-2 text-sm font-medium" for="hari">Hari/Tanggal</label>
+            <input type="text" name="hari" id="hari"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Hari, Tanggal" value="{{ old('hari') }}" required>
+
+            <label class="block mb-2 text-sm font-medium" for="waktu">Waktu</label>
+            <input type="text" name="waktu" id="waktu"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="XX:XX - XX:XX WITA" value="{{ old('waktu') }}" required>
+
+            <label class="block mb-2 text-sm font-medium" for="tempat">Tempat</label>
+            <input type="text" name="tempat" id="tempat"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Tempat" value="{{ old('tempat') }}" required>
+        </div>
+        <hr>
         <div>
             <label for="message" class="block mb-2 text-sm font-medium">Keterangan</label>
             <textarea id="message" rows="4" name="keterangan"

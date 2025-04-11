@@ -6,6 +6,8 @@ use App\Models\Surat;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class SuratKeluarcontroller extends Controller
 {
@@ -14,7 +16,9 @@ class SuratKeluarcontroller extends Controller
      */
     public function index()
     {
-        $surat = Surat::where('pengirim_id', Auth::id())->get();
+        $surat = Surat::where('pengirim_id', Auth::id())
+        ->orderBy('created_at', 'desc')
+        ->get();
         return view('daftarsuratkeluar', compact('surat'));
     }
 
@@ -22,6 +26,7 @@ class SuratKeluarcontroller extends Controller
     {
         $surat = Surat::where('pengirim_id', Auth::id())
             ->where('verifikasi', 'belum')
+            ->orderBy('created_at', 'desc')
             ->get();
         return view('verifikasisuratkeluar', compact('surat'));
     }
@@ -62,6 +67,7 @@ class SuratKeluarcontroller extends Controller
 
         $surat = Surat::where('pengirim_id', '=', Auth::id())
             ->where('verifikasi', '=', 'sudah')
+            ->orderBy('created_at', 'desc')
             ->get();
         return view('tandatangansuratkeluar', compact('surat'));
     }
@@ -116,21 +122,40 @@ class SuratKeluarcontroller extends Controller
      */
     public function store(Request $request)
     {
+        $filename = 'surat'.time().'.docx';
+        $phpword = new \PhpOffice\PhpWord\TemplateProcessor('template.docx');
         try {
             $request->validate([
                 'judul_surat' => 'required',
-                'isi' => 'required|mimes:pdf,docx,doc|max:2048',
+                'tanggal' => 'required',
+                'nomor_surat' => 'required',
+                'lampiran_surat' => 'required',
+                'perihal_surat' => 'required',
+                'isi' => 'required',
+                'hari' => 'required',
+                'waktu' => 'required',
+                'tempat' => 'required',
                 'tujuan_surat' => 'required',
             ]);
 
-            // Store the file and get its path
-            $file = $request->file('isi');
-            $filePath = $file->storeAs('surat', time() . '_letter.' . $file->getClientOriginalExtension(), 'public');
-
+            $phpword->setValues([
+                'judul_surat' => $request->judul_surat,
+                'tanggal' => $request->tanggal,
+                'nomor_surat' => $request->nomor_surat,
+                'lampiran_surat' => $request->lampiran_surat,
+                'perihal_surat' => $request->perihal_surat,
+                'isi' => $request->isi,
+                'hari' => $request->hari,
+                'waktu' => $request->waktu,
+                'tempat' => $request->tempat,
+            ]);
+            $filepath = 'storage/surat/' . $filename;
+            $phpword->saveAs($filepath);
+            
             Surat::create([
                 'judul_surat' => $request->judul_surat,
-                'nomor_surat' => $this->nomorbaru(),
-                'isi' => $filePath,
+                'nomor_surat' => $request->nomor_surat,
+                'isi' => $filename,
                 'tujuan_id' => $request->tujuan_surat,
                 'pengirim_id' => Auth::id(),
                 'status' => 'baru',
@@ -139,7 +164,7 @@ class SuratKeluarcontroller extends Controller
             ]);
             return back()->with('success', 'Surat berhasil dibuat');
         } catch (\Exception $e) {
-            $file->delete();
+            File::delete(public_path($filename));
             return back()->with('error',  'Surat gagal dibuat: ' . $e->getMessage())->withInput();
         }
     }

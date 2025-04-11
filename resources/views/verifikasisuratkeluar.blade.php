@@ -26,7 +26,7 @@
             {{ session('error') }}
         </div>
         @endif
-        <h1 class="font-bold text-center text-2xl">Daftar Surat Keluar</h1>
+        <h1 class="font-semibold text-lg">Verifikasi Surat Keluar</h1>
         <div class="relative overflow-x-auto">
             <table class="w-full text-sm text-left text-gray-500 rtl:text-right">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -35,10 +35,13 @@
                             Tanggal Dibuat
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Penerima
+                            Nomor Surat
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Nomor Surat
+                            Nama Surat
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Penerima
                         </th>
                         <th scope="col" class="px-6 py-3">
                             File Surat
@@ -51,7 +54,7 @@
                 <tbody>
                     @if (count($surat) == 0)
                     <tr class="bg-white border-b border-gray-200">
-                        <td colspan="5" class="px-6 py-4 text-center">
+                        <td colspan="6" class="px-6 py-4 text-center">
                             Tidak ada surat keluar yang perlu diverifikasi.
                         </td>
                     </tr>
@@ -62,14 +65,16 @@
                             {{ $item->created_at->format('D, d M Y') }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->tujuan->name }}
-                        </td>
-                        <td class="px-6 py-4">
                             {{ $item->nomor_surat }}
                         </td>
                         <td class="px-6 py-4">
-                            <a href="{{ asset('storage/' . $item->isi) }}" target="_blank"
-                                class="text-blue-500 hover:underline">
+                            {{ $item->judul_surat }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $item->tujuan->name }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <a href="/surat/download/{{ $item->id }}" class="text-blue-500 hover:underline">
                                 {{ $item->isi }}
                             </a>
                         </td>

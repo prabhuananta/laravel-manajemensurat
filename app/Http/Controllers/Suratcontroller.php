@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Surat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class Suratcontroller extends Controller
 {
@@ -26,12 +28,27 @@ class Suratcontroller extends Controller
         return view('beranda', compact('surat', 'data'));
     }
 
+
     /**
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
     {
-        echo "ini create" . $request->judul_surat;
+        // File::move(public_path('surat1744292020.docx'), storage_path('surat\surat1744292020.docx'));
+        // rename(public_path('surat1744292020.docx'), storage_path('surat\surat1744292020.docx'));
+        $phpword = new \PhpOffice\PhpWord\TemplateProcessor('template.docx');
+        $phpword->setValues([
+            'hari' => 'Kocak',
+        ]);
+        $filepath = 'storage/surat/surat1744292020.docx';
+        $phpword->saveAs($filepath);
+    }
+
+    public function download(String $id) {
+        $surat = Surat::findOrFail($id)->isi;
+        $file = public_path('storage/surat/'.$surat);
+        $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        return response()->download($file, $surat, $headers);
     }
 
     /**

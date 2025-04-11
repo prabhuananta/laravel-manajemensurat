@@ -48,7 +48,7 @@
                     @if (count($surat) == 0)
                     <tr class="bg-white border-b border-gray-200">
                         <td colspan="5" class="px-6 py-4 text-center">
-                            Tidak ada surat keluar yang perlu diverifikasi.
+                            Tidak ada surat masuk.
                         </td>
                     </tr>
                     @else

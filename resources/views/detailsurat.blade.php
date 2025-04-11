@@ -57,8 +57,8 @@
                 placeholder="Tuliskan keterangan surat">{{ $surat->keterangan }}</textarea>
         </div>
         <div>
-            <label class="block mb-2 text-sm font-medium" for="file_input">Isi Surat</label>
-            <a href="/storage/{{ $surat->isi }}" target="_blank" class="text-blue-600 hover:underline mb-2">
+            <label class="block mb-2 text-sm font-medium" for="file_input">File Surat</label>
+            <a href="/surat/download/{{ $item->id }}" class="text-blue-600 hover:underline mb-2">
                 {{ $surat->isi }}
             </a>
         </div>

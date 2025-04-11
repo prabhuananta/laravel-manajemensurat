@@ -21,7 +21,7 @@
         <div
             class="absolute border border-gray-200 bg-white z-50 top-1/2 left-1/2 -translate-1/2 p-5 shadow-md rounded-lg px-5">
             <span class="flex justify-between gap-5">
-                <span class="text-2xl mb-4">Registrasi Pengguna Baru</span>
+                <h1 class="font-semibold text-lg">Daftar Surat Masuk</h1>
                 <button onclick="createmodal()"
                     class="bg-gray-50 rounded-sm size-8 hover:bg-gray-100 hover:cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
@@ -129,7 +129,7 @@
         </div>
         @endif
         <div class="w-full flex gap-5 justify-between items-center mb-5">
-            <p class="text-2xl font-bold text-nowrap">Daftar Pengguna</p>
+            <h1 class="font-semibold text-lg text-nowrap">Daftar Pengguna</h1>
             <div class="flex justify-between items-center w-full">
                 <input type="text" id="default-search" placeholder="Search"
                     class="block p-2.5 w-1/3 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"

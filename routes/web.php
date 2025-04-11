@@ -23,6 +23,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [Usercontroller::class, 'logout'])->name('logout');
     Route::get('/dashboard', [Suratcontroller::class, 'index']);
 
+    Route::get('/surat/download/{id}', [Suratcontroller::class, 'download']);
+
     Route::get('/suratkeluar/registrasi', [SuratKeluarcontroller::class, 'create']);
     Route::get('/suratkeluar/daftar', [SuratKeluarcontroller::class, 'index']);
     Route::get('/suratkeluar/tandatangan', [SuratKeluarcontroller::class, 'indextandatangan']);
@@ -49,4 +51,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profil', function () {
         return view('profilpengguna');
     });
+
+    Route::get('/tes', [Suratcontroller::class, 'create']);
 });

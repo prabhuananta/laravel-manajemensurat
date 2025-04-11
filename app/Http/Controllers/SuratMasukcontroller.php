@@ -15,6 +15,7 @@ class SuratMasukcontroller extends Controller
     {
         $surat = Surat::where('tujuan_id', Auth::id())
             ->where('verifikasi', 'sudah')
+            ->orderBy('created_at', 'desc')
             ->get();
         return view('daftarsuratmasuk', compact('surat'));
     }
@@ -23,6 +24,7 @@ class SuratMasukcontroller extends Controller
     {
         $surat = Surat::where('tujuan_id', Auth::id())
             ->where('status', 'diproses')
+            ->orderBy('created_at', 'desc')
             ->get();
         return view('disposisisuratmasuk', compact('surat'));
     }

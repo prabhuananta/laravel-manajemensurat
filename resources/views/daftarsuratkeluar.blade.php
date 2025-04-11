@@ -17,9 +17,10 @@
 
 <main class="w-full bg-white rounded-md p-5">
     <div class="col-span-2 p-5 space-y-4 bg-white rounded">
-        <h1 class="font-bold text-center text-2xl">Daftar Surat Keluar</h1>
+        <h1 class="font-semibold text-lg">Daftar Surat Keluar</h1>
         <div class="relative overflow-x-auto">
             <table class="w-full text-sm text-left text-gray-500 rtl:text-right">
+
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -40,6 +41,13 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if (count($surat) == 0)
+                    <tr class="bg-white border-b border-gray-200">
+                        <td colspan="5" class="px-6 py-4 text-center">
+                            Tidak ada surat masuk.
+                        </td>
+                    </tr>
+                    @else
                     @foreach($surat as $item)
                     <tr class="bg-white border-b border-gray-200">
                         <td class="px-6 py-4">
@@ -52,8 +60,7 @@
                             {{ $item->nomor_surat }}
                         </td>
                         <td class="px-6 py-4">
-                            <a href="{{ asset('storage/' . $item->isi) }}" target="_blank"
-                                class="text-blue-500 hover:underline">
+                            <a href="/surat/download/{{ $item->id }}" class="text-blue-500 hover:underline">
                                 {{ $item->isi }}
                             </a>
                         </td>
@@ -70,6 +77,7 @@
                         </td>
                     </tr>
                     @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
