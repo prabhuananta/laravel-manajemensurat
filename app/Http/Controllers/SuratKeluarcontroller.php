@@ -24,8 +24,7 @@ class SuratKeluarcontroller extends Controller
 
     public function indexverifikasi()
     {
-        $surat = Surat::where('pengirim_id', Auth::id())
-            ->where('verifikasi', 'belum')
+        $surat = Surat::where('verifikasi', 'belum')
             ->orderBy('created_at', 'desc')
             ->get();
         return view('verifikasisuratkeluar', compact('surat'));
@@ -56,58 +55,20 @@ class SuratKeluarcontroller extends Controller
             Surat::where('id', $request->id)->update([
                 'verifikasi' => 'ditolak',
             ]);
-            return back()->with('success', 'Surat berhasil diverifikasi');
+            return back()->with('success', 'Surat berhasil ditolak');
         } catch (\Exception $e) {
-            return back()->with('error',  'Surat gagal diverifikasi: ' . $e->getMessage())->withInput();
+            return back()->with('error',  'Surat gagal ditolak: ' . $e->getMessage())->withInput();
         }
     }
 
-    public function indextandatangan()
+    public function indexditolak()
     {
 
-        $surat = Surat::where('pengirim_id', '=', Auth::id())
-            ->where('verifikasi', '=', 'sudah')
+        $surat = Surat::where('verifikasi', '=', 'ditolak')
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('tandatangansuratkeluar', compact('surat'));
+        return view('tolaksuratkeluar', compact('surat'));
     }
-
-    public function tandatangan(Request $request)
-    {
-        try {
-            $request->validate([
-                'id' => 'required',
-                'tandatangan' => 'required|mimes:pdf,docx,doc|max:2048',
-            ]);
-
-            // Store the file and get its path
-            $file = $request->file('tandatangan');
-            $filePath = $file->storeAs('surat', time() . '_letter.' . $file->getClientOriginalExtension(), 'public');
-
-            Surat::where('id', $request->surat_id)->update([
-                'verifikasi' => 'sudah',
-                'isi' => $filePath,
-            ]);
-            return back()->with('success', 'Surat berhasil ditandatangani');
-        } catch (\Exception $e) {
-            return back()->with('error',  'Surat gagal ditandatangani: ' . $e->getMessage())->withInput();
-        }
-    }
-
-    public function nomorbaru()
-    {
-        $nomor = Surat::max('nomor_surat');
-        $noUrut = 0;
-
-        if ($nomor && preg_match('/^SK\/\d{3}$/', $nomor)) {
-            $noUrut = (int) substr($nomor, 3, 3);
-        }
-
-        $noUrut++;
-        $char = "SK/";
-        return $char . sprintf("%03s", $noUrut);
-    }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -174,8 +135,7 @@ class SuratKeluarcontroller extends Controller
      */
     public function show(string $id)
     {
-        $surat = Surat::findOrFail($id);
-        return view('detailsuratkeluar', compact('surat'));
+
     }
 
     /**

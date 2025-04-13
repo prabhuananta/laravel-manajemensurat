@@ -4,9 +4,13 @@
 
 @section('content')
 
-<main class="bg-cyan-50 min-h-screen flex items-center justify-center">
-    <div class="bg-white p-8 rounded-md shadow-md max-w-md space-y-4">
-        <img class="" src="{{ asset('storage/logo.png') }}" alt="">
+<main class="bg-blue-50 min-h-screen flex items-center justify-center">
+    <div class="w-full h-2/6 bg-blue-950 absolute top-0">
+        <center>
+            <img class="size-52" src="{{ asset('storage/logo-polos.png') }}" alt="">
+        </center>
+    </div>
+    <div class="absolute w-96 bg-white p-8 rounded-md shadow-md max-w-md space-y-4">
 
         <h1 class="text-2xl font-bold text-center">LOGIN</h1>
         <form action="./login" method="POST" class="max-w-sm mx-auto">
@@ -32,10 +36,10 @@
                     placeholder="password" required />
             </div>
             <div class="flex items-start mb-5">
-                {{-- <div class="flex items-center h-5">
+                <div class="flex items-center h-5">
                     <input id="remember" type="checkbox" value=""
-                        class="w-4 h-4 border border-gray-300 bg-gray-50 focus:ring-3 focus:ring-blue-300" required />
-                </div> --}}
+                        class="w-4 h-4 border border-gray-300 bg-gray-50 focus:ring-3 focus:ring-blue-300" />
+                </div>
                 <label for="remember" class="ms-2 text-sm font-medium">
                     Ingat Saya
                 </label>

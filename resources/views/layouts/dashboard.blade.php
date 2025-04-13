@@ -105,6 +105,11 @@
                                         Verifikasi Surat Keluar
                                     </a>
                                 </li>
+                                <li>
+                                    <a class="hover:text-gray-800" href="/suratkeluar/ditolak">
+                                        Daftar Surat Ditolak
+                                    </a>
+                                </li>
                                 @endif
                             </ul>
                         </div>
@@ -173,7 +178,7 @@
 
                     <div class="space-y-1">
                         <span class="text-sm font-semibold">{{Auth::user()->email}}</span>
-                        <small class="block">{{ Auth::user()->role }}</small>
+                        <small class="block">{{ Auth::user()->name }}</small>
                     </div>
                     <button onclick="toggleDropdown(this)" id="dropdownProfileButton"
                         class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 hover:cursor-pointer focus:ring-0 focus:outline-none "

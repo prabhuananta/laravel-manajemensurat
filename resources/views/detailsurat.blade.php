@@ -58,7 +58,7 @@
         </div>
         <div>
             <label class="block mb-2 text-sm font-medium" for="file_input">File Surat</label>
-            <a href="/surat/download/{{ $item->id }}" class="text-blue-600 hover:underline mb-2">
+            <a href="/surat/download/{{ $surat->id }}" class="text-blue-600 hover:underline mb-2">
                 {{ $surat->isi }}
             </a>
         </div>

@@ -30,8 +30,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/suratkeluar/tandatangan', [SuratKeluarcontroller::class, 'indextandatangan']);
     Route::post('/suratkeluar/tandatangan', [SuratKeluarcontroller::class, 'tandatangan']);
     Route::get('/suratkeluar/verifikasi', [SuratKeluarcontroller::class, 'indexverifikasi']);
+    Route::get('/suratkeluar/ditolak', [SuratKeluarcontroller::class, 'indexditolak']);
     Route::post('/suratkeluar/verifikasi', [SuratKeluarcontroller::class, 'verifikasi']);
-    Route::post('/suratkeluar/tolak', [SuratKeluarcontroller::class, 'verifikasi']);
+    Route::post('/suratkeluar/tolak', [SuratKeluarcontroller::class, 'tolak']);
     Route::post('/suratkeluar/suratbaru', [SuratKeluarcontroller::class, 'store']);
 
     Route::get('/suratmasuk/daftar', [SuratMasukcontroller::class, 'index']);
