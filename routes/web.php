@@ -52,6 +52,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profil', function () {
         return view('profilpengguna');
     });
-
-    Route::get('/tes', [Suratcontroller::class, 'create']);
 });

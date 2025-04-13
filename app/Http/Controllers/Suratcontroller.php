@@ -18,7 +18,7 @@ class Suratcontroller extends Controller
         $data = [
             'belum_dikirim' => Surat::where('pengirim_id', Auth::id())->where('verifikasi', 'belum')->count(),
             'ditolak' => Surat::where('pengirim_id', Auth::id())->where('verifikasi', 'ditolak')->count(),
-            'belum_dibaca' => Surat::where('tujuan_id', Auth::id())->where('status', 'baru')->count(),
+            'belum_dibaca' => Surat::where('tujuan_id', Auth::id())->where('status', 'baru')->where('verifikasi', 'sudah')->count(),
             'tindaklanjut' => Surat::where('tujuan_id', Auth::id())->where('status', 'proses')->count(),
         ];
 
@@ -34,14 +34,7 @@ class Suratcontroller extends Controller
      */
     public function create(Request $request)
     {
-        // File::move(public_path('surat1744292020.docx'), storage_path('surat\surat1744292020.docx'));
-        // rename(public_path('surat1744292020.docx'), storage_path('surat\surat1744292020.docx'));
-        $phpword = new \PhpOffice\PhpWord\TemplateProcessor('template.docx');
-        $phpword->setValues([
-            'hari' => 'Kocak',
-        ]);
-        $filepath = 'storage/surat/surat1744292020.docx';
-        $phpword->saveAs($filepath);
+
     }
 
     public function download(String $id) {

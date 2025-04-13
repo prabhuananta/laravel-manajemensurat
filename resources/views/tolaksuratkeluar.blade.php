@@ -41,6 +41,9 @@
                             Nama Surat
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Pengirim
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Penerima
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -69,6 +72,9 @@
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->judul_surat }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $item->pengirim->name }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->tujuan->name }}
