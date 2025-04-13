@@ -65,7 +65,7 @@
                             </a>
                         </td>
                         <td class="px-6 py-4">
-                            @if ($item->verifikasi === 'belum')
+                            @if ($item->verifikasi === 'belum' || $item->verifikasi === 'ditolak')
                             <span class="bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
                                 {{ $item->verifikasi }}
                             </span>
