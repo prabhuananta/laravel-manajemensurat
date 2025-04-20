@@ -36,6 +36,9 @@
                             File Surat
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Status
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Verifikasi
                         </th>
                     </tr>
@@ -64,6 +67,26 @@
                                 {{ $item->isi }}
                             </a>
                         </td>
+                        @if ($item->status === 'baru')
+                        <td class="px-6 py-4">
+                            <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
+                                Belum Dibaca
+                            </span>
+                        </td>
+                        @elseif ($item->status === 'proses')
+                        <td class="px-6 py-4">
+                            <span
+                                class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
+                                Diproses
+                            </span>
+                        </td>
+                        @elseif ($item->status === 'selesai')
+                        <td class="px-6 py-4">
+                            <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
+                                Selesai
+                            </span>
+                        </td>
+                        @endif
                         <td class="px-6 py-4">
                             @if ($item->verifikasi === 'belum' || $item->verifikasi === 'ditolak')
                             <span class="bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">

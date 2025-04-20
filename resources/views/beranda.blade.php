@@ -31,7 +31,7 @@
                     </svg>
                 </div>
                 <center class="mx-auto">
-                    <p>Belum Dikirim</p>
+                    <p>Belum Diverifikasi</p>
                     <strong>{{ $data['belum_dikirim'] }}</strong>
                 </center>
             </div>
@@ -79,7 +79,7 @@
                     </svg>
                 </div>
                 <center class="mx-auto">
-                    <p>Tindak Lanjut</p>
+                    <p>Disposisi</p>
                     <strong>{{ $data['tindaklanjut'] }}</strong>
                 </center>
             </div>

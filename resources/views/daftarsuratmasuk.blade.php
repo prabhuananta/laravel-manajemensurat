@@ -40,6 +40,9 @@
                             Keterangan
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Status
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Aksi
                         </th>
                     </tr>
@@ -65,6 +68,9 @@
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->keterangan }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $item->status }}
                         </td>
                         <td class="px-6 py-4">
                             @if ($item->status === 'baru')
