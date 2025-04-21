@@ -40,9 +40,6 @@
                             Keterangan
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Status
-                        </th>
-                        <th scope="col" class="px-6 py-3">
                             Aksi
                         </th>
                     </tr>
@@ -70,25 +67,19 @@
                             {{ $item->keterangan }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->status }}
-                        </td>
-                        <td class="px-6 py-4">
                             @if ($item->status === 'baru')
                             <a href="/suratmasuk/{{ $item->id }}" class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm
-                                hover:cursor-pointer hover:bg-blue-200">
-                                Lihat
+                                hover:cursor-pointer hover:bg-blue-200">Lihat
                             </a>
-
-                            @elseif($item->status === 'diproses')
+                            @elseif ($item->status === 'dibaca' || $item->status === 'diproses')
                             <a href="/suratmasuk/{{ $item->id }}" class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm
                                 hover:cursor-pointer hover:bg-yellow-200">Proses
                             </a>
-
-                            @elseif($item->status === 'selesai')
+                            @elseif ($item->status === 'selesai')
                             <a href="/suratmasuk/{{ $item->id }}" class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm
                                 hover:cursor-pointer hover:bg-green-200">Selesai
-                                @endif
                             </a>
+                            @endif
                         </td>
                     </tr>
                     @endforeach

@@ -15,6 +15,8 @@ class SuratMasukcontroller extends Controller
     {
         $surat = Surat::where('tujuan_id', Auth::id())
             ->where('verifikasi', 'sudah')
+            ->where('status', 'baru')
+            ->orWhere('status', 'dibaca')
             ->orderBy('created_at', 'desc')
             ->get();
         return view('daftarsuratmasuk', compact('surat'));
