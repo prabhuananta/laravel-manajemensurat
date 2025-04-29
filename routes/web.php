@@ -11,6 +11,11 @@ Route::get('/', function () {
     return redirect('login');
 });
 
+Route::post('/test', [
+    SuratKeluarcontroller::class,
+    'test'
+]);
+
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
         return view('login');

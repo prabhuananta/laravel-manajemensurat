@@ -17,8 +17,8 @@ class SuratKeluarcontroller extends Controller
     public function index()
     {
         $surat = Surat::where('pengirim_id', Auth::id())
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('daftarsuratkeluar', compact('surat'));
     }
 
@@ -83,39 +83,47 @@ class SuratKeluarcontroller extends Controller
      */
     public function store(Request $request)
     {
-        $filename = 'surat'.time().'.docx';
+        $filename = 'surat' . time() . '.docx';
         $phpword = new \PhpOffice\PhpWord\TemplateProcessor('template.docx');
         try {
             $request->validate([
-                'judul_surat' => 'required',
-                'tanggal' => 'required',
-                'nomor_surat' => 'required',
-                'lampiran_surat' => 'required',
-                'perihal_surat' => 'required',
-                'isi' => 'required',
-                'hari' => 'required',
-                'waktu' => 'required',
+                'tanggalsurat' => 'required',
+                'nomorsurat' => 'required',
+                'sifatsurat' => 'required',
+                'perihal' => 'required',
+                'isisurat' => 'required',
+                'haritanggal' => 'required',
+                'pukul' => 'required',
                 'tempat' => 'required',
+                'acara' => 'required',
                 'tujuan_surat' => 'required',
+                'undangan' => 'required|array',
+                'undangan.*' => 'required|string',
+                'keterangan' => 'required',
             ]);
 
             $phpword->setValues([
-                'judul_surat' => $request->judul_surat,
-                'tanggal' => $request->tanggal,
-                'nomor_surat' => $request->nomor_surat,
-                'lampiran_surat' => $request->lampiran_surat,
-                'perihal_surat' => $request->perihal_surat,
-                'isi' => $request->isi,
-                'hari' => $request->hari,
-                'waktu' => $request->waktu,
+                'tanggalsurat' => $request->tanggalsurat,
+                'nomorsurat' => $request->nomorsurat,
+                'sifatsurat' => $request->sifatsurat,
+                'perihal' => $request->perihal,
+                'isisurat' => $request->isisurat,
+                'haritanggal' => $request->haritanggal,
+                'pukul' => $request->pukul,
                 'tempat' => $request->tempat,
+                'acara' => $request->acara,
             ]);
+
+            for ($i = 0; $i < count($request->undangan); $i++) {
+                $replacements[] = array('undangan' => $request->undangan[$i]);
+            }
+            $phpword->cloneBlock('block', 0, true, false, $replacements);
             $filepath = 'storage/surat/' . $filename;
             $phpword->saveAs($filepath);
-            
+
             Surat::create([
-                'judul_surat' => $request->judul_surat,
-                'nomor_surat' => $request->nomor_surat,
+                'judul_surat' => $request->perihal,
+                'nomor_surat' => $request->nomorsurat,
                 'isi' => $filename,
                 'tujuan_id' => $request->tujuan_surat,
                 'pengirim_id' => Auth::id(),
@@ -129,14 +137,15 @@ class SuratKeluarcontroller extends Controller
             return back()->with('error',  'Surat gagal dibuat: ' . $e->getMessage())->withInput();
         }
     }
+    public function test(Request $request)
+    {
+        dd($request);
+    }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.
