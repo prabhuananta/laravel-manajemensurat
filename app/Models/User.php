@@ -22,6 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'jabatan',
+        'golongan',
     ];
 
     /**
@@ -45,5 +47,19 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isVerfikator()
+    {
+        return Verifikator::where('user_id', $this->id)->exists();
+    }
+
+    public function isPenandatangan()
+    {
+        return Penandatangan::where('user_id', $this->id)->exists();
+    }
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
     }
 }

@@ -9,7 +9,7 @@
 </a>
 <span class="font-semibold">/</span>
 <a class="font-semibold" href="#">
-    Daftar Pengguna
+    Grup Tujuan
 </a>
 @endsection
 
@@ -19,9 +19,9 @@
     {{-- create modal --}}
     <div id="create-modal" class="fixed hidden backdrop-blur-xs w-full h-full top-0 left-0">
         <div
-            class="absolute border border-gray-200 bg-white z-50 top-1/2 left-1/2 -translate-1/2 p-5 shadow-md rounded-lg px-5 w-lg">
+            class="absolute border border-gray-200 bg-white z-50 top-1/2 left-1/2 -translate-1/2 p-5 shadow-md rounded-lg px-5 w-lg max-h-3/4 overflow-y-auto">
             <span class="flex justify-between gap-5">
-                <h1 class="font-semibold text-lg">Pengguna Baru</h1>
+                <h1 class="font-semibold text-lg">Grup Tujuan Baru</h1>
                 <button onclick="createmodal()"
                     class="bg-gray-50 rounded-sm size-8 hover:bg-gray-100 hover:cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
@@ -32,82 +32,43 @@
                 </button>
             </span>
 
-            <form action="/penggunabaru" method="POST" class="space-y-4">
+            <form action="/gruptujuan" method="POST" class="space-y-4">
                 @csrf
                 <div>
                     <label for="nama" class="block mb-2 text-sm font-medium ">
-                        Nama
+                        Nama Grup Tujuan
                     </label>
-                    <input type="text" id="nama" placeholder="Nama" name="name" value="{{ old('name') }}" required
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                </div>
-                <div>
-                    <label for="email" class="block mb-2 text-sm font-medium ">
-                        Email
-                    </label>
-                    <input type="email" id="email" placeholder="Email" name="email" value="{{ old('email') }}" required
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                </div>
-                <div>
-                    <label for="role" class="block mb-2 text-sm font-medium ">
-                        Role
-                    </label>
-                    <select name="role" id="role"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        <option value="" disabled selected>Pilih Role</option>
-                        <option value="Admin" {{ old('role')=='Admin' ? 'selected' : '' }}>
-                            Admin
-                        </option>
-                        <option value="User" {{ old('role')=='User' ? 'selected' : '' }}>
-                            User
-                        </option>
-                    </select>
-                </div>
-                <div>
-                    <label for="golongan" class="block mb-2 text-sm font-medium ">
-                        Golongan
-                    </label>
-                    <select id="golongan"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        name="golongan">
-                        <option value="" disabled selected>Pilih Golongan</option>
-                        <option value="Anggota">Anggota
-                        </option>
-                        <option value="Kepala Bidang">Kepala
-                            Bidang</option>
-                        <option value="Sekretaris">Sekretaris
-                        </option>
-                        <option value="Kepala Dinas">Kepala Dinas
-                        </option>
-                    </select>
-                </div>
-                <div>
-                    <label for="jabatan" class="block mb-2 text-sm font-medium ">
-                        Jabatan
-                    </label>
-                    <input type="text" id="jabatan" placeholder="Jabatan" name="jabatan" value="{{ old('jabatan') }}"
+                    <input type="text" id="nama" placeholder="Nama" name="nama_grup" value="{{ old('nama_grup') }}"
                         required
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                 </div>
                 <div>
-                    <label for="password" class="block mb-2 text-sm font-medium ">
-                        Buat Password
+                    <label for="keterangan" class="block mb-2 text-sm font-medium ">
+                        Keterangan
                     </label>
-                    <input type="password" id="password" placeholder="Password" name="password"
-                        value="{{ old('password') }}" required
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <textarea name="keterangan" id="keterangan" rows="5" placeholder="Keterangan" requred
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">{{ old('keterangan') }}</textarea>
                 </div>
                 <div>
-                    <label for="password_confirm" class="block mb-2 text-sm font-medium ">
-                        Konfirmasi Password
+                    <label for="anggota" class="block mb-2 text-sm font-medium ">
+                        Anggota
                     </label>
-                    <input type="password" id="password_confirm" placeholder="Konfirmasi Password"
-                        name="password_confirmation" value="{{ old('password_confirmation') }}" required
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <button type="button"
+                        class="bg-gray-200 text-xs mb-2 px-4 py-2 cursor-pointer hover:bg-gray-300 rounded-full"
+                        onclick="addAnggota()">Tambah Anggota</button>
+                    <select id="anggota" name="user_id[]" required
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                        <option value="">Pilih</option>
+                        @foreach ($user as $option)
+                        <option value="{{ $option->id }}" {{ old('user_id[]')==$option->id ? 'selected' : '' }}>
+                            {{ $option->name }}
+                        </option>
+                        @endforeach
+                    </select>
                 </div>
                 <button type="submit"
                     class="text-white rounded-lg bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium hover:cursor-pointer text-sm px-5 py-2.5 text-center">
-                    Buat Pengguna
+                    Buat Grup Tujuan
                 </button>
             </form>
         </div>
@@ -139,7 +100,7 @@
             </svg>
 
             <p class=" text-gray-500 mb-4">
-                Apakah Anda yakin ingin menghapus pengguna
+                Apakah Anda yakin ingin menghapus Grup Tujuan
                 ini?
             </p>
             <form id="alertform" action="/user/delete/" method="POST" class="grid grid-cols-2 gap-4">
@@ -168,14 +129,14 @@
         </div>
         @endif
         <div class="w-full flex gap-5 justify-between items-center mb-5">
-            <h1 class="font-semibold text-lg text-nowrap">Daftar Pengguna</h1>
+            <h1 class="font-semibold text-lg text-nowrap">Daftar Grup Tujuan</h1>
             <div class="flex justify-between items-center w-full">
                 <input type="text" id="default-search" placeholder="Search"
                     class="block p-2.5 w-1/3 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                     required>
                 <button onclick="createmodal()"
                     class="flex items-center gap-2 text-white bg-green-500 hover:bg-green-600 hover:cursor-pointer rounded-lg py-2 px-4">
-                    Pengguna Baru
+                    Grup Tujuan Baru
                     <svg class="size-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
                         <!-- Icon from Unicons by Iconscout - https://github.com/Iconscout/unicons/blob/master/LICENSE -->
                         <path fill="currentColor"
@@ -190,19 +151,16 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Nama
+                            Nama Grup
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Email
+                            Keterangan
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Role
+                            Jumlah Anggota
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Golongan
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Jabatan
+                            Dibuat Pada
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Aksi
@@ -210,25 +168,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($user as $item)
+                    @foreach($datas as $item)
                     <tr class="bg-white border-b border-gray-200">
                         <td class="px-6 py-4">
-                            {{ $item->name }}
+                            {{ $item->nama_grup }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->email }}
+                            {{ $item->keterangan }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->role }}
+                            {{ $item->users->count() }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->golongan }}
+                            {{ $item->created_at->format('d M Y H:i') }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->jabatan }}
-                        </td>
-                        <td class="px-6 py-4 text-nowrap">
-                            <a href="/user/edit/{{ $item->id }}"
+                            <a href="/gruptujuan/edit/{{ $item->id }}"
                                 class="px-3 py-1 text-white bg-blue-500 rounded-md">Edit</a>
                             <button onclick="alertmodal({{ $item->id }})"
                                 class="px-3 py-1 text-white bg-red-500 rounded-md hover:cursor-pointer">Hapus</button>
@@ -251,7 +206,29 @@
             modal.classList.toggle('hidden');
             modal.classList.toggle('flex');
             const form = modal.querySelector('#alertform');
-            form.action = '/user/delete/' + id;
+            form.action = '/gruptujuan/delete/' + id;
+        }
+        function addAnggota() {
+            const anggotaSelect = document.querySelector('#anggota');
+            // Clone the existing select element
+            const clone = anggotaSelect.cloneNode(true);
+            // Reset the selected value in the clone
+            clone.value = "";
+            // Create a container div for the new select
+            const container = document.createElement('div');
+            container.className = 'mt-1 flex items-center gap-2';
+            container.appendChild(clone);
+
+            // Add remove button
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'bg-red-200 text-xs px-2 py-1 cursor-pointer hover:bg-red-300 rounded-full';
+            removeBtn.textContent = 'Hapus';
+            removeBtn.onclick = function() { container.remove(); };
+            container.appendChild(removeBtn);
+
+            // Insert the new select after the original one
+            anggotaSelect.parentNode.appendChild(container);
         }
     </script>
     @endsection

@@ -27,74 +27,118 @@
                             Tanggal Dibuat
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Penerima
+                            Nomor Surat
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Nomor Surat
+                            Nama Surat
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Informasi
                         </th>
                         <th scope="col" class="px-6 py-3">
                             File Surat
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Status
+                            Verifikasi
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Verifikasi
+                            Status
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (count($surat) == 0)
                     <tr class="bg-white border-b border-gray-200">
-                        <td colspan="5" class="px-6 py-4 text-center">
-                            Tidak ada surat masuk.
+                        <td colspan="8" class="px-6 py-4 text-center">
+                            Tidak ada surat keluar.
                         </td>
                     </tr>
                     @else
                     @foreach($surat as $item)
                     <tr class="bg-white border-b border-gray-200">
                         <td class="px-6 py-4">
-                            {{ $item->created_at->format('D, d M Y') }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ $item->tujuan->name }}
+                            {{ $item->created_at->locale('id')->translatedFormat('D, d M Y') }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->nomor_surat }}
                         </td>
                         <td class="px-6 py-4">
+                            {{ $item->judul_surat }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <table class="text-sm min-w-full">
+                                <tbody>
+                                    <tr>
+                                        <td class="font-medium">Pengirim</td>
+                                        <td class="text-gray-600 px-2">:</td>
+                                        <td>{{ $item->pengirim->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-medium">Tujuan</td>
+                                        <td class="text-gray-600 px-2">:</td>
+                                        <td>{{ $item->tujuan->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-medium">Sifat</td>
+                                        <td class="text-gray-600 px-2">:</td>
+                                        <td>{{ $item->sifat_surat }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-medium">Jenis</td>
+                                        <td class="text-gray-600 px-2">:</td>
+                                        <td>{{ $item->jenis_surat }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-medium">Verif</td>
+                                        <td class="text-gray-600 px-2">:</td>
+                                        <td>{{ $item->verifikator->user->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-medium">TTD</td>
+                                        <td class="text-gray-600 px-2">:</td>
+                                        <td>{{ $item->penandatangan->user->name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="px-6 py-4">
                             <a href="/surat/download/{{ $item->id }}" class="text-blue-500 hover:underline">
-                                {{ $item->isi }}
+                                Lihat
                             </a>
                         </td>
-                        @if ($item->status === 'baru')
-                        <td class="px-6 py-4">
-                            <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
-                                Belum Dibaca
+                        <td class="text-center px-6 py-4">
+                            @if ($item->verifikasi === 'belum')
+                            <span class="bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
+                                Menunggu Verifikasi
                             </span>
-                        </td>
-                        @elseif ($item->status === 'diproses')
-                        <td class="px-6 py-4">
+                            @elseif ($item->verifikasi === 'sudah')
                             <span
                                 class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
-                                Diproses
+                                Menunggu Tanda Tangan
                             </span>
-                        </td>
-                        @elseif ($item->status === 'selesai')
-                        <td class="px-6 py-4">
+                            @elseif ($item->verifikasi === 'tertanda')
                             <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
                                 Selesai
                             </span>
+                            @endif
                         </td>
-                        @endif
                         <td class="px-6 py-4">
-                            @if ($item->verifikasi === 'belum' || $item->verifikasi === 'ditolak')
-                            <span class="bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
-                                {{ $item->verifikasi }}
+                            @if ($item->status === 'baru')
+                            <span
+                                class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
+                                Belum Dibaca
                             </span>
-                            @elseif ($item->verifikasi === 'sudah')
+                            @elseif ($item->status === 'dibaca')
+                            <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
+                                Dibaca
+                            </span>
+                            @elseif ($item->status === 'diproses')
+                            <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
+                                Diproses
+                            </span>
+                            @elseif ($item->status === 'selesai')
                             <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
-                                {{ $item->verifikasi }}
+                                Selesai
                             </span>
                             @endif
                         </td>

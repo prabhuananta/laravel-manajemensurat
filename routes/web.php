@@ -11,16 +11,8 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::post('/test', [
-    SuratKeluarcontroller::class,
-    'test'
-]);
-
 Route::middleware(['guest'])->group(function () {
-    Route::get('/login', function () {
-        return view('login');
-    });
-
+    Route::get('/login', [Usercontroller::class, 'indexlogin']);
     Route::post('/login', [Usercontroller::class, 'login'])->name('login');
 });
 
@@ -30,15 +22,17 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/surat/download/{id}', [Suratcontroller::class, 'download']);
 
-    Route::get('/suratkeluar/registrasi', [SuratKeluarcontroller::class, 'create']);
+    Route::get('/suratkeluar', [Suratcontroller::class, 'pilihsuratkeluar']);
+    Route::get('/suratkeluar/notadinas', [SuratKeluarcontroller::class, 'createnotadinas']);
+    Route::get('/suratkeluar/suratperintah', [SuratKeluarcontroller::class, 'createsuratperintah']);
     Route::get('/suratkeluar/daftar', [SuratKeluarcontroller::class, 'index']);
     Route::get('/suratkeluar/tandatangan', [SuratKeluarcontroller::class, 'indextandatangan']);
-    Route::post('/suratkeluar/tandatangan', [SuratKeluarcontroller::class, 'tandatangan']);
     Route::get('/suratkeluar/verifikasi', [SuratKeluarcontroller::class, 'indexverifikasi']);
     Route::get('/suratkeluar/ditolak', [SuratKeluarcontroller::class, 'indexditolak']);
-    Route::post('/suratkeluar/verifikasi', [SuratKeluarcontroller::class, 'verifikasi']);
-    Route::post('/suratkeluar/tolak', [SuratKeluarcontroller::class, 'tolak']);
     Route::post('/suratkeluar/suratbaru', [SuratKeluarcontroller::class, 'store']);
+    Route::post('/suratkeluar/tandatangan', [SuratKeluarcontroller::class, 'tandatangan']);
+    Route::post('/suratkeluar/verifikasi', [SuratKeluarcontroller::class, 'verifikasi']);
+    Route::post('/suratkeluar/tolak/{id}', [SuratKeluarcontroller::class, 'tolak']);
 
     Route::get('/suratmasuk/daftar', [SuratMasukcontroller::class, 'index']);
     Route::get('/suratmasuk/disposisi', [SuratMasukcontroller::class, 'indexdisposisi']);
@@ -47,14 +41,30 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/suratmasuk/selesai/{id}', [SuratMasukcontroller::class, 'selesai']);
 
     Route::get('/user', [Usercontroller::class, 'index']);
-    Route::get('/user/edit/{id}', [Usercontroller::class, 'create']);
+    Route::get('/user/edit/{id}', [Usercontroller::class, 'show']);
+    Route::get('/profil',  [Usercontroller::class, 'indexprofil']);
 
     Route::delete('/user/delete/{id}', [Usercontroller::class, 'destroy']);
-    Route::post('/user/update/{id}', [Usercontroller::class, 'edit']);
-    Route::post('/penggunabaru', [Usercontroller::class, 'store']);
-    Route::post('/updateprofil', [Usercontroller::class, 'update']);
+    Route::post('/user/update/{id}', [Usercontroller::class, 'update']);
+    Route::post('/penggunabaru', [Usercontroller::class, 'create']);
+    Route::post('/updateprofil', [Usercontroller::class, 'updateprofil']);
 
-    Route::get('/profil', function () {
-        return view('profilpengguna');
-    });
+
+    Route::get('/gruptujuan',  [Usercontroller::class, 'indexgruptujuan']);
+    Route::post('/gruptujuan',  [Usercontroller::class, 'creategruptujuan']);
+    Route::get('/gruptujuan/edit/{id}',  [Usercontroller::class, 'showgruptujuan']);
+    Route::post('/gruptujuan/update/{id}',  [Usercontroller::class, 'updategruptujuan']);
+    route::delete('/gruptujuan/delete/{id}',  [Usercontroller::class, 'destroygruptujuan']);
+
+    Route::get('/penandatangan',  [Usercontroller::class, 'indexpenandatangan']);
+    Route::post('/penandatangan',  [Usercontroller::class, 'createpenandatangan']);
+    Route::get('/penandatangan/edit/{id}',  [Usercontroller::class, 'showpenandatangan']);
+    Route::post('/penandatangan/update/{id}',  [Usercontroller::class, 'updatepenandatangan']);
+    Route::delete('/penandatangan/delete/{id}',  [Usercontroller::class, 'destroypenandatangan']);
+
+    Route::get('/verifikator',  [Usercontroller::class, 'indexverifikator']);
+    Route::post('/verifikator',  [Usercontroller::class, 'createverifikator']);
+    Route::get('/verifikator/edit/{id}',  [Usercontroller::class, 'showverifikator']);
+    Route::post('/verifikator/update/{id}',  [Usercontroller::class, 'updateverifikator']);
+    Route::delete('/verifikator/delete/{id}',  [Usercontroller::class, 'destroyverifikator']);
 });

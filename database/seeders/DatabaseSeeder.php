@@ -16,10 +16,36 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('admin'),
+            'name' => 'I Putu Sekretaris',
+            'email' => 'sekre@gmail.com',
+            'password' => bcrypt('12345678'),
             'role' => 'admin',
+            'golongan' => 'Sekretaris',
+            'jabatan' => 'Sekretaris Dinas Pendidikan Kepemudaan dan Olahraga Kota Denpasar',
+        ]);
+        User::factory()->create([
+            'name' => 'Kabid A',
+            'email' => 'kabida@gmail.com',
+            'password' => bcrypt('12345678'),
+            'role' => 'user',
+            'golongan' => 'Kepala Bidang',
+            'jabatan' => 'Kepala Bidang Pendidikan Anak Usia Dini Dinas Pendidikan Kepemudaan dan Olahraga Kota Denpasar',
+        ]);
+        User::factory()->create([
+            'name' => 'Kabid B',
+            'email' => 'kabidb@gmail.com',
+            'password' => bcrypt('12345678'),
+            'role' => 'user',
+            'golongan' => 'Kepala Bidang',
+            'jabatan' => 'Kepala Bidang Pendidikan Dasar Dinas Pendidikan Kepemudaan dan Olahraga Kota Denpasar',
+        ]);
+        User::factory()->create([
+            'name' => 'I Komang Kepala Dinas',
+            'email' => 'kadis@gmail.com',
+            'password' => bcrypt('12345678'),
+            'role' => 'user',
+            'golongan' => 'Kepala Dinas',
+            'jabatan' => 'Kepala Dinas Pendidikan Kepemudaan dan Olahraga Kota Denpasar',
         ]);
     }
 }

@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     @vite('resources/css/app.css')
     <title>@yield('title')</title>
 </head>
@@ -89,7 +90,7 @@
                         <div class="mt-2 panel hidden">
                             <ul class="ml-4 space-y-2 list-disc list-inside">
                                 <li>
-                                    <a class="hover:text-gray-800" href="/suratkeluar/registrasi">
+                                    <a class="hover:text-gray-800" href="/suratkeluar">
                                         Registrasi Surat Keluar
                                     </a>
                                 </li>
@@ -98,23 +99,28 @@
                                         Daftar Surat Keluar
                                     </a>
                                 </li>
-                                @if (Auth::user()->role == 'admin')
-
+                                @if (Auth::user()->isVerfikator())
                                 <li>
                                     <a class="hover:text-gray-800" href="/suratkeluar/verifikasi">
                                         Verifikasi Surat Keluar
                                     </a>
                                 </li>
+                                @elseif (Auth::user()->isPenandatangan())
+                                <li>
+                                    <a class="hover:text-gray-800" href="/suratkeluar/tandatangan">
+                                        Tandatangan Surat Keluar
+                                    </a>
+                                </li>
+                                @endif
                                 <li>
                                     <a class="hover:text-gray-800" href="/suratkeluar/ditolak">
                                         Daftar Surat Ditolak
                                     </a>
                                 </li>
-                                @endif
                             </ul>
                         </div>
                     </li>
-                    @if (Auth::user()->role == 'admin')
+                    @if (Auth::user()->isAdmin())
 
                     <li class="py-2 text-xs font-bold">
                         MASTER
@@ -130,7 +136,7 @@
                                         d="M12.3 12.22A4.92 4.92 0 0 0 14 8.5a5 5 0 0 0-10 0a4.92 4.92 0 0 0 1.7 3.72A8 8 0 0 0 1 19.5a1 1 0 0 0 2 0a6 6 0 0 1 12 0a1 1 0 0 0 2 0a8 8 0 0 0-4.7-7.28M9 11.5a3 3 0 1 1 3-3a3 3 0 0 1-3 3m9.74.32A5 5 0 0 0 15 3.5a1 1 0 0 0 0 2a3 3 0 0 1 3 3a3 3 0 0 1-1.5 2.59a1 1 0 0 0-.5.84a1 1 0 0 0 .45.86l.39.26l.13.07a7 7 0 0 1 4 6.38a1 1 0 0 0 2 0a9 9 0 0 0-4.23-7.68" />
                                 </svg>
                                 <span class="font-semibold">
-                                    Pengguna
+                                    User
                                 </span>
                             </div>
                             <svg class="size-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
@@ -144,6 +150,9 @@
                             <ul class="ml-4 space-y-2 list-disc list-inside">
                                 <li><a class="hover:text-gray-800" href="/user">Daftar Pengguna</a></li>
                                 <li><a class="hover:text-gray-800" href="/profil">Profil Saya</a></li>
+                                <li><a class="hover:text-gray-800" href="/gruptujuan">Grup Tujuan</a></li>
+                                <li><a class="hover:text-gray-800" href="/penandatangan">Penandatangan</a></li>
+                                <li><a class="hover:text-gray-800" href="/verifikator">Verifikator</a></li>
                             </ul>
                         </div>
                         @endif
@@ -177,8 +186,8 @@
                     </svg>
 
                     <div class="space-y-1">
-                        <span class="text-sm font-semibold">{{Auth::user()->email}}</span>
-                        <small class="block">{{ Auth::user()->name }}</small>
+                        <span class="text-sm font-semibold">{{Auth::user()->name}}</span>
+                        <small class="block">{{ Auth::user()->golongan }}</small>
                     </div>
                     <button onclick="toggleDropdown(this)" id="dropdownProfileButton"
                         class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 hover:cursor-pointer focus:ring-0 focus:outline-none "

@@ -14,14 +14,21 @@
 @endsection
 
 @section('content')
+<script>
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' || e.keyCode === 27) {
+            window.location.href = '/user';
+        }
+    });
+</script>
 <main class="w-full bg-white rounded-md p-5 space-y-4">
 
     {{-- modal --}}
     <div class="fixed backdrop-blur-xs w-full h-full top-0 left-0">
         <div
-            class="absolute border border-gray-200 bg-white z-50 top-1/2 left-1/2 -translate-1/2 p-5 shadow-md rounded-lg px-5">
-            <span class="flex gap-5">
-                <span class="text-2xl mb-4">Registrasi Pengguna Baru</span>
+            class="absolute border border-gray-200 bg-white z-50 w-lg top-1/2 left-1/2 -translate-1/2 p-5 shadow-md rounded-lg px-5">
+            <span class="flex gap-5 justify-between">
+                <span class="text-2xl mb-4">Edit Pengguna</span>
                 <a href="/user" class="bg-gray-50 rounded-sm size-8 hover:bg-gray-100 hover:cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
                         <!-- Icon from CodeX Icons by CodeX - https://github.com/codex-team/icons/blob/master/LICENSE -->
@@ -43,26 +50,26 @@
             <form action="/user/update/{{ $user->id }}" method="POST" class="space-y-4">
                 @csrf
                 <div>
-                    <label for="default-input" class="block mb-2 text-sm font-medium ">
+                    <label for="nama" class="block mb-2 text-sm font-medium ">
                         Nama
                     </label>
-                    <input type="text" id="default-input" placeholder="Nama" name="name"
+                    <input type="text" id="nama" placeholder="Nama" name="name"
                         value="{{ (!$user->name) ? old('name') : $user->name }}" required
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                 </div>
                 <div>
-                    <label for="default-input" class="block mb-2 text-sm font-medium ">
+                    <label for="email" class="block mb-2 text-sm font-medium ">
                         Email
                     </label>
-                    <input type="email" id="default-input" placeholder="Email" name="email"
+                    <input type="email" id="email" placeholder="Email" name="email"
                         value="{{ (!$user->email) ? old('email') : $user->email }}" required
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                 </div>
                 <div>
-                    <label for="default-input" class="block mb-2 text-sm font-medium ">
+                    <label for="role" class="block mb-2 text-sm font-medium ">
                         Role
                     </label>
-                    <select
+                    <select id="role"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         name="role">
                         <option value="admin" @if($user->role == 'admin') selected @endif>Admin</option>
@@ -70,18 +77,43 @@
                     </select>
                 </div>
                 <div>
-                    <label for="default-input" class="block mb-2 text-sm font-medium ">
-                        Buat Password
+                    <label for="golongan" class="block mb-2 text-sm font-medium ">
+                        Golongan
                     </label>
-                    <input type="password" id="default-input" placeholder="Password" name="password"
+                    <select id="golongan"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        name="golongan">
+                        <option value="Anggota" @if($user->golongan == 'Anggota') selected @endif>Anggota
+                        </option>
+                        <option value="Kepala Bidang" @if($user->golongan == 'Kepala Bidang') selected @endif>Kepala
+                            Bidang</option>
+                        <option value="Sekretaris" @if($user->golongan == 'Sekretaris') selected @endif>Sekretaris
+                        </option>
+                        <option value="Kepala Dinas" @if($user->golongan == 'Kepala Dinas') selected @endif>Kepala Dinas
+                        </option>
+                    </select>
+                </div>
+                <div>
+                    <label for="jabatan" class="block mb-2 text-sm font-medium ">
+                        Jabatan
+                    </label>
+                    <input type="text" id="jabatan" placeholder="Jabatan" name="jabatan"
+                        value="{{ (!$user->jabatan) ? old('jabatan') : $user->jabatan }}"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                </div>
+                <div>
+                    <label for="password" class="block mb-2 text-sm font-medium ">
+                        Password Baru
+                    </label>
+                    <input type="password" id="password" placeholder="Password Baru (Opsional)" name="password"
                         value="{{ old('password') }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                 </div>
                 <div>
-                    <label for="default-input" class="block mb-2 text-sm font-medium ">
-                        Konfirmasi Password
+                    <label for="password_confirmation" class="block mb-2 text-sm font-medium ">
+                        Konfirmasi Password Baru
                     </label>
-                    <input type="password" id="default-input" placeholder="Konfirmasi Password"
+                    <input type="password" id="password_confirmation" placeholder="Konfirmasi Password"
                         name="password_confirmation" value="{{ old('password_confirmation') }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                 </div>
