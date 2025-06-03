@@ -131,6 +131,7 @@ class Suratcontroller extends Controller
 
     public static function createNotaDinas($request, $filename)
     {
+    //    dd($request->all());
         $request->validate([
             'yth' => 'required|string',
             'lampiran' => 'required|string',
@@ -146,6 +147,7 @@ class Suratcontroller extends Controller
                 'nomor' => $request->nomor_surat,
                 'sifat' => $request->sifat_surat,
                 'lampiran' => $request->lampiran,
+                'tanggal_surat' => $request->tanggal_surat,
                 'perihal' => $request->perihal,
                 'paragraf_1' => $request->paragraf_1,
                 'paragraf_2' => $request->paragraf_2,
@@ -162,6 +164,7 @@ class Suratcontroller extends Controller
 
     public static function createSuratPerintah($request, $filename)
     {
+     
         $request->validate([
             'dasar' => 'required|string',
             'hal' => 'required|string',
@@ -176,6 +179,7 @@ class Suratcontroller extends Controller
                 'hal' => $request->hal,
                 'kepada' => $request->kepada,
                 'untuk' => $request->untuk,
+               
                 'jabatan_tertanda' => Penandatangan::findOrFail($request->penandatangan_id)->user->jabatan,
                 'nama_tertanda' => Penandatangan::findOrFail($request->penandatangan_id)->user->name,
                 'nip_tertanda' => Penandatangan::findOrFail($request->penandatangan_id)->nip,

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('judul_surat');
             $table->string('nomor_surat');
             $table->string('isi');
+           $table->timestamp('tanggal_surat')->useCurrent();
+
             $table->string('keterangan');
             $table->enum('verifikasi', ['sudah', 'belum']);
             $table->enum('status', ['baru', 'diproses', 'selesai']);

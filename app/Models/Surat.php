@@ -21,6 +21,7 @@ class Surat extends Model
         'gruptujuan_id',
         'sifat_surat',
         'jenis_surat',
+        'tanggal_surat',
     ];
     protected $casts = [
         'created_at' => 'datetime',
