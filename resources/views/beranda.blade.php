@@ -86,7 +86,7 @@
         </div>
     </div>
     <div class="col-span-2 p-5 space-y-4 bg-white rounded">
-        <h2 class="font-semibold text-center">Daftar Surat Disposisi</h2>
+        <h2 class="font-semibold text-center">Daftar Surat Masuk</h2>
         <div class="relative overflow-x-auto">
             <table class="w-full text-sm text-left text-gray-500 rtl:text-right">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -112,7 +112,7 @@
                     @if (count($surat) == 0)
                     <tr class="bg-white border-b border-gray-200">
                         <td colspan="6" class="px-6 py-4 text-center">
-                            Tidak ada surat keluar yang ditolak.
+                            Tidak ada surat masuk.
                         </td>
                     </tr>
                     @else

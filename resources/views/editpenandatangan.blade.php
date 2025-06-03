@@ -37,6 +37,15 @@
                     </svg>
                 </a>
             </span>
+            @if (session('success'))
+            <div class="p-4 mb-4 text-sm text-green-800 bg-green-100 rounded-lg" role="alert">
+                {{ session('success') }}
+            </div>
+            @elseif (session('error'))
+            <div class="p-4 mb-4 text-sm text-red-800 bg-red-100 rounded-lg" role="alert">
+                {{ session('error') }}
+            </div>
+            @endif
 
             <form action="/penandatangan/update/{{ $datas->id }}" method="POST" class="space-y-4"
                 enctype="multipart/form-data">
@@ -49,30 +58,45 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                         <option value="">Pilih</option>
                         @foreach ($user as $option)
-                        <option value="{{ $option->id }}" {{ ((!$datas->user_id) ? old('user_id') : $datas->user_id)
+                        <option value="{{ $option->id }}" {{ ((old('user_id')) ? old('user_id') : $datas->user_id)
                             == $option->id ? 'selected'
                             : '' }}>
                             {{ $option->name }}
                         </option>
                         @endforeach
                     </select>
+                    @error('user_id')
+                    <div class="text-sm text-red-800" role="alert">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <div>
                     <label for="nip" class="block mb-2 text-sm font-medium">
                         NIP
                     </label>
-                    <input type="text" id="nip" name="nip" value="{{ (!$datas->nip) ? old('nip') : $datas->nip }}"
+                    <input type="text" id="nip" name="nip" value="{{ (old('nip')) ? old('nip') : $datas->nip }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="NIP Penandatangan" required>
+                    @error('nip')
+                    <div class="text-sm text-red-800" role="alert">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <div>
                     <label for="jabatan" class="block mb-2 text-sm font-medium">
                         Jabatan
                     </label>
                     <input type="text" id="jabatan" name="jabatan"
-                        value="{{ (!$datas->user->jabatan) ? old('jabatan') : $datas->user->jabatan }}"
+                        value="{{ (old('jabatan')) ? old('jabatan') : $datas->user->jabatan }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="Jabatan Penandatangan" required>
+                    @error('jabatan')
+                    <div class="text-sm text-red-800" role="alert">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <div>
                     <label for="file_tanda_tangan" class="block mb-2 text-sm font-medium ">
@@ -82,6 +106,11 @@
                         src="{{ asset('storage/tanda_tangan/'.$datas->file_tanda_tangan ) }}" alt="hai">
                     <input type="file" id="file_tanda_tangan" name="file_tanda_tangan"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    @error('file_tanda_tangan')
+                    <div class="text-sm text-red-800" role="alert">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <button type="submit"
                     class="text-white rounded-lg bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium hover:cursor-pointer text-sm px-5 py-2.5 text-center">

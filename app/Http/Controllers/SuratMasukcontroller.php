@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GrupTujuanUser;
 use App\Models\Surat;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -10,7 +11,12 @@ class SuratMasukcontroller extends Controller
 {
     public function index()
     {
-        $surat = Surat::where('tujuan_id', Auth::id())
+        $grupTujuanId = GrupTujuanUser::where('user_id', Auth::id())
+            ->pluck('grup_tujuan_id');
+        $surat = Surat::where(function ($query) use ($grupTujuanId) {
+            $query->where('tujuan_id', Auth::id())
+                ->orWhereIn('gruptujuan_id', $grupTujuanId);
+        })
             ->where('verifikasi', 'tertanda')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -28,12 +34,12 @@ class SuratMasukcontroller extends Controller
         return view('disposisisuratmasuk', compact('surat'));
     }
 
-    public function show(string $id)
+    public function show($id)
     {
-        $surat = Surat::findOrFail($id);
-        $surat->update([
+        Surat::findOrFail($id)->where('tujuan_id', Auth::id())->update([
             'status' => 'dibaca',
         ]);
+        $surat = Surat::findOrFail($id);
         return view('detailsurat', compact('surat'));
     }
 
@@ -56,9 +62,9 @@ class SuratMasukcontroller extends Controller
             $surat->update([
                 'status' => 'selesai',
             ]);
-            return redirect('/suratmasuk/disposisi')->with('success', 'Disposisi selesai');
+            return redirect('/suratmasuk/disposisi')->with('success', 'Berhasil mengubah status surat');
         } catch (\Exception $e) {
-            return back()->with('error', 'Disposisi gagal: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi Kesalahan: ' . $e->getMessage());
         }
     }
 }

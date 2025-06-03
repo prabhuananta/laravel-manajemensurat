@@ -62,7 +62,6 @@
                         <div class="mt-2 panel hidden">
                             <ul class="ml-4 space-y-2 list-disc list-inside">
                                 <li><a class="hover:text-gray-800" href="/suratmasuk/daftar">Daftar Surat Masuk</a></li>
-                                <li><a class="hover:text-gray-800" href="/suratmasuk/disposisi">Disposisi</a></li>
                             </ul>
                         </div>
                     </li>

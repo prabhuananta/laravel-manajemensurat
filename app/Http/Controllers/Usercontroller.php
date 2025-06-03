@@ -157,7 +157,7 @@ class Usercontroller extends Controller
     {
         $request->validate([
             'user_id' => 'required|exists:users,id',
-            'nip' => 'required',
+            'nip' => 'required|numeric|digits_between:10,20',
             'file_tanda_tangan' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -275,41 +275,45 @@ class Usercontroller extends Controller
     }
     public function updatePenandatangan(Request $request, $id)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'nip' => 'required',
-            'file_tanda_tangan' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
-        $tandaTangan = Penandatangan::findOrFail($id);
-        $data = [
-            'user_id' => $request->user_id,
-            'nip' => $request->nip,
-        ];
-
-        if ($request->hasFile('file_tanda_tangan')) {
-            // Handle new file upload
-            $file = $request->file('file_tanda_tangan');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('storage/tanda_tangan/'), $filename);
-
-            // Delete old file if it exists
-            if (
-                !empty($tandaTangan->file_tanda_tangan) &&
-                file_exists(public_path("storage/tanda_tangan/{$tandaTangan->file_tanda_tangan}"))
-            ) {
-                unlink(public_path("storage/tanda_tangan/{$tandaTangan->file_tanda_tangan}"));
-            }
-
-            // Add file to data array to update in database
-            $data['file_tanda_tangan'] = $filename;
-        }
         try {
+            $request->validate([
+                'user_id' => 'required|exists:users,id',
+                'nip' => 'required|numeric|digits_between:10,20',
+                'file_tanda_tangan' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'jabatan' => 'required',
+            ]);
+
+            $tandaTangan = Penandatangan::with('user')->findOrFail($id);
+            $data = [
+                'user_id' => $request->user_id,
+                'nip' => $request->nip,
+            ];
+
+            if ($request->hasFile('file_tanda_tangan')) {
+
+                // Handle new file upload
+                $file = $request->file('file_tanda_tangan');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('storage/tanda_tangan/'), $filename);
+
+                // Delete old file if it exists
+                if (
+                    !empty($tandaTangan->file_tanda_tangan) &&
+                    file_exists(public_path("storage/tanda_tangan/{$tandaTangan->file_tanda_tangan}"))
+                ) {
+                    unlink(public_path("storage/tanda_tangan/{$tandaTangan->file_tanda_tangan}"));
+                }
+
+                // Add file to data array to update in database
+                $data['file_tanda_tangan'] = $filename;
+            }
             $tandaTangan->update($data);
+            User::where('id', $tandaTangan->user_id)->update([
+                'jabatan' => $request->jabatan,
+            ]);
             return back()->with('success', 'Penandatangan berhasil diperbarui');
         } catch (\Exception $e) {
-            unlink(public_path("storage/tanda_tangan/{$tandaTangan->file_tanda_tangan}"));
-            return back()->with('error', 'Penandatangan gagal diperbarui : ' . $e->getMessage());
+            return back()->with('error', 'Terjadi Kesalahan : ' . $e->getMessage())->withInput();
         }
     }
     public function updateVerifikator(Request $request, $id)

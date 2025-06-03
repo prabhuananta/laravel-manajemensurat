@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GrupTujuanUser;
 use App\Models\Penandatangan;
 use App\Models\Surat;
 use Carbon\Carbon;
@@ -32,7 +33,13 @@ class Suratcontroller extends Controller
             $data['belum_dikirim'] = $data['belum_dikirim']->where('pengirim_id', Auth::id());
         }
 
-        $surat = $data['tindaklanjut']
+        $grupTujuanId = GrupTujuanUser::where('user_id', Auth::id())
+            ->pluck('grup_tujuan_id');
+        $surat = Surat::where(function ($query) use ($grupTujuanId) {
+            $query->where('tujuan_id', Auth::id())
+                ->orWhereIn('gruptujuan_id', $grupTujuanId);
+        })
+            ->where('verifikasi', 'tertanda')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -122,7 +129,7 @@ class Suratcontroller extends Controller
         $phpword->saveAs($filepath);
     }
 
-    public static function createNotaDinas(Request $request, $filename)
+    public static function createNotaDinas($request, $filename)
     {
         $request->validate([
             'yth' => 'required|string',
@@ -149,61 +156,35 @@ class Suratcontroller extends Controller
             $filepath = 'storage/surat/' . $filename;
             $phpword->saveAs($filepath);
         } catch (\Exception $e) {
-            return back()->with('error', 'Terjadi Kesalahan: ' . $e->getMessage())->withInput();
+            return $e;
         }
     }
 
-    public static function createSuratPerintah(Request $request, $filename)
+    public static function createSuratPerintah($request, $filename)
     {
         $request->validate([
-            'nama' => 'required|string',
-            'nip' => 'required|string',
-            'pangkat' => 'required|string',
-            'jabatan' => 'required|string',
-            'nomor' => 'required|string',
-            'tahun' => 'required|integer',
-            'tentang' => 'required|string',
-            'terhitung_mulai' => 'required|date',
-            'terhitung_selesai' => 'required|date',
-            'sebagai' => 'required|string',
-            'tempat' => 'required|string',
-            'tembusan' => 'required|array',
-            'tembusan.*' => 'required|string',
+            'dasar' => 'required|string',
+            'hal' => 'required|string',
+            'kepada' => 'required|string',
+            'untuk' => 'required|string',
         ]);
         try {
-            $phpword = new \PhpOffice\PhpWord\TemplateProcessor('SURATPERINTAH.docx');
-            $terhitung = Carbon::createFromDate($request->terhitung_mulai)
-                ->locale('id')
-                ->translatedFormat('d F Y');
-            $terhitung .= ' sampai ' . Carbon::createFromDate($request->terhitung_selesai)
-                ->locale('id')
-                ->translatedFormat('d F Y');
-
+            $phpword = new \PhpOffice\PhpWord\TemplateProcessor('SURATTUGAS.docx');
             $phpword->setValues([
-                'nama_petugas' => $request->nama,
-                'nip_petugas' => $request->nip,
-                'pangkat_petugas' => $request->pangkat,
-                'jabatan_petugas' => $request->jabatan,
-                'nomor_naskah' => $request->nomor,
-                'tahun' => $request->tahun,
-                'tentang' => $request->tentang,
-                'terhitung' => $terhitung,
-                'sebagai' => $request->sebagai,
-                'tempat' => $request->tempat,
-
+                'nomor_naskah' => $request->nomor_surat,
+                'dasar' => $request->dasar,
+                'hal' => $request->hal,
+                'kepada' => $request->kepada,
+                'untuk' => $request->untuk,
                 'jabatan_tertanda' => Penandatangan::findOrFail($request->penandatangan_id)->user->jabatan,
                 'nama_tertanda' => Penandatangan::findOrFail($request->penandatangan_id)->user->name,
                 'nip_tertanda' => Penandatangan::findOrFail($request->penandatangan_id)->nip,
-                'pangkat_tertanda' => Penandatangan::findOrFail($request->penandatangan_id)->pangkat,
+                'pangkat_tertanda' => Penandatangan::findOrFail($request->penandatangan_id)->user->golongan,
             ]);
-            for ($i = 0; $i < count($request->tembusan); $i++) {
-                $replacements[] = array('tembusan' => $request->tembusan[$i]);
-            }
-            $phpword->cloneBlock('block', 0, true, false, $replacements);
             $filepath = 'storage/surat/' . $filename;
             $phpword->saveAs($filepath);
         } catch (\Exception $e) {
-            return back()->with('error', 'Terjadi Kesalahan: ' . $e->getMessage())->withInput();
+            return $e->getMessage();
         }
     }
 }

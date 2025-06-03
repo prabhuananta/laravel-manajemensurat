@@ -62,7 +62,7 @@ class SuratKeluarcontroller extends Controller
         }
     }
 
-    public function tandatangan(Request $request) //TODO
+    public function tandatangan(Request $request)
     {
         try {
             $request->validate([
@@ -71,10 +71,11 @@ class SuratKeluarcontroller extends Controller
             $surat = Surat::findOrFail($request->id);
             $penandatangan = Penandatangan::with('user')->findOrFail($surat->penandatangan_id);
             $phpword = new \PhpOffice\PhpWord\TemplateProcessor('./storage/surat/' . $surat->isi);
+            $phpword->setValue('tanggal_tertanda', Carbon::now()->locale('id')->translatedFormat('d F Y'));
             $phpword->setImageValue('tertanda', [
                 'path' => public_path('storage/tanda_tangan/' . $penandatangan->file_tanda_tangan),
                 'width' => 300,
-                'height' => 100,
+                'height' => 80,
                 'ratio' => true,
             ]);
             $phpword->saveAs(public_path('storage/surat/' . $surat->isi));
@@ -146,7 +147,6 @@ class SuratKeluarcontroller extends Controller
     {
         $request->validate([
             'tujuan_id' => 'required|integer',
-            'gruptujuan_id' => 'required|integer',
             'verifikator_id' => 'required|integer',
             'penandatangan_id' => 'required|integer',
             'nomor_surat' => 'required|string',
@@ -157,9 +157,12 @@ class SuratKeluarcontroller extends Controller
         $filename = 'surat' . time() . '.docx';
         try {
             if ($request->jenis_surat === 'SURAT PERINTAH') {
-                Suratcontroller::createSuratPerintah($request, $filename);
+                $e = Suratcontroller::createSuratPerintah($request, $filename);
             } else if ($request->jenis_surat === 'NOTA DINAS') {
-                Suratcontroller::createNotaDinas($request, $filename);
+                $e = Suratcontroller::createNotaDinas($request, $filename);
+            }
+            if ($e) {
+                return back()->with('error', 'Surat gagal dibuat: ' . $e)->withInput();
             }
 
             Surat::create([

@@ -49,7 +49,6 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
             <h2 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Informasi Surat</h2>
-
             <div class="space-y-4">
                 <div>
                     <label class="text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -167,27 +166,15 @@
     </a>
 
     <div class="mt-8 flex justify-end">
-        @if ($surat->status == 'baru' || $surat->status == 'dibaca')
-        <a href="/suratmasuk/proses/{{ $surat->id }}"
-            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-6 py-3 text-center transition-all flex items-center">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
-                </path>
-            </svg>
-            Proses Surat
-        </a>
-        @else
-        <a href="/suratmasuk/selesai/{{ $surat->id }}"
-            class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg px-6 py-3 text-center transition-all flex items-center">
+        <a href="/suratmasuk/selesai/{{ $surat->id }}" @if ($surat->status === 'selesai') disabled @endif
+            class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300
+            font-medium rounded-lg px-6 py-3 text-center transition-all flex items-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
             Selesai
         </a>
-        @endif
     </div>
 </main>
 

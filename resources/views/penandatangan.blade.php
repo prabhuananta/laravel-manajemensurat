@@ -47,14 +47,24 @@
                         </option>
                         @endforeach
                     </select>
+                    @error('user_id')
+                    <div class="text-sm text-red-800">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <div>
-                    <label for="nip" class="block mb-2 text-sm font-medium">
+                    <label for="nip" class="block mb-2 text-sm font-medium" required>
                         NIP
                     </label>
                     <input type="text" id="nip" name="nip" value="{{ old('nip') }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="NIP Penandatangan" required>
+                    @error('nip')
+                    <div class="text-sm text-red-800">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <div>
                     <label for="file_tanda_tangan" class="block mb-2 text-sm font-medium ">
@@ -62,6 +72,11 @@
                     </label>
                     <input type="file" id="file_tanda_tangan" name="file_tanda_tangan"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    @error('file_tanda_tangan')
+                    <div class="text-sm text-red-800">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <button type="submit"
                     class="text-white rounded-lg bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium hover:cursor-pointer text-sm px-5 py-2.5 text-center">
@@ -184,7 +199,7 @@
                         <td class="px-6 py-4">
                             {{ $item->created_at->format('d M Y H:i') }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 text-nowrap">
                             <a href="/penandatangan/edit/{{ $item->id }}"
                                 class="px-3 py-1 text-white bg-blue-500 rounded-md">Edit</a>
                             <button onclick="alertmodal({{ $item->id }})"

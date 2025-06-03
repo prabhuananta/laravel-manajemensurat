@@ -40,7 +40,7 @@
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                     <option value="">Pilih</option>
                     @foreach ($penerima as $option)
-                    <option value="{{ $option->id }}" {{ old('tujuan_surat')==$option->id ? 'selected' : '' }} >{{
+                    <option value="{{ $option->id }}" {{ old('tujuan_id')==$option->id ? 'selected' : '' }} >{{
                         $option->name }}</option>
                     @endforeach
                 </select>
@@ -53,7 +53,7 @@
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                     <option value="">Pilih</option>
                     @foreach ($grupTujuan as $option)
-                    <option value="{{ $option->id }}" {{ old('grup')==$option->id ? 'selected' : '' }} >{{
+                    <option value="{{ $option->id }}" {{ old('gruptujuan_id')==$option->id ? 'selected' : '' }} >{{
                         $option->nama_grup }}</option>
                     @endforeach
                 </select>
@@ -110,13 +110,13 @@
                         placeholder="Judul Surat" value="{{ old('judul_surat') }}" required>
                 </div>
                 <div>
-                    <label class="block mb-2 text-sm font-medium" for="tanggalsurat">
+                    <label class="block mb-2 text-sm font-medium" for="tanggal_surat">
                         Tanggal Surat
                         <span class="text-red-600">*</span>
                     </label>
-                    <input type="date" name="tanggalsurat" id="tanggalsurat"
+                    <input type="date" name="tanggal_surat" id="tanggal_surat"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Tanggal Surat" value="{{ old('tanggalsurat') }}" required>
+                        placeholder="Tanggal Surat" value="{{ old('tanggal_surat') }}" required>
                 </div>
                 <div>
                     <label class="block mb-2 text-sm font-medium" for="sifat_surat">
